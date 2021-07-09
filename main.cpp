@@ -28,13 +28,10 @@ struct T
 
 struct TFunction                               //4
 {
-    T* compare(T* a, T* b) //5
+    T* compare(T& a, T& b) //5
     {
-        if (a != nullptr && b != nullptr)
-        {
-            if( a->value < b->value ) return a;
-            if( a->value > b->value ) return b;
-        }
+        if( a.value < b.value ) return &a;
+        if( a.value > b.value ) return &b;
         return nullptr;
     }
 };
@@ -43,46 +40,36 @@ struct U
 {
     float var1 { 0.f }, var2 { 0.f };
 
-    float smoothAndMultiply(float* updatedValue)      //12
+    float smoothAndMultiply(const float& updatedValue)      //12
     {
-        if (updatedValue != nullptr)
+        std::cout << "U's var1 value: " << var1 << std::endl;
+        var1 = updatedValue;
+        std::cout << "U's var1 updated value: " << var1 << std::endl;
+        while( std::abs(var2 - var1) > 0.001f )
         {
-            std::cout << "U's var1 value: " << var1 << std::endl;
-            var1 = *updatedValue;
-            std::cout << "U's var1 updated value: " << var1 << std::endl;
-            while( std::abs(var2 - var1) > 0.001f )
-            {
-                var2 += 0.1f;
-            }
-            std::cout << "U's var2 updated value: " << var2 << std::endl;
-            return var2 * var1;
+            var2 += 0.1f;
         }
-
-        return 0.f;
+        std::cout << "U's var2 updated value: " << var2 << std::endl;
+        return var2 * var1;
     }
 };
 
 struct UFunction
 {
-    static float smoothAndMultiply( U* that, float* updatedValue )        //10
+    static float smoothAndMultiply( U& that, float& updatedValue )        //10
     {
-        if (that != nullptr && updatedValue != nullptr)
+        std::cout << "U's var1 value: " << that.var1 << std::endl;
+        that.var1 = updatedValue;
+        std::cout << "U's var1 updated value: " << that.var1 << std::endl;
+        while( std::abs(that.var2 - that.var1) > 0.001f )
         {
-            std::cout << "U's var1 value: " << that->var1 << std::endl;
-            that->var1 = *updatedValue;
-            std::cout << "U's var1 updated value: " << that->var1 << std::endl;
-            while( std::abs(that->var2 - that->var1) > 0.001f )
-            {
-                /*
-                 write something that makes the distance between that->var2 and that->var1 get smaller
-                 */
-                that->var2 += 0.1f;
-            }
-            std::cout << "U's var2 updated value: " << that->var2 << std::endl;
-            return that->var2 * that->var1;
+            /*
+             write something that makes the distance between that->var2 and that->var1 get smaller
+            */
+            that.var2 += 0.1f;
         }
-        
-        return 0.f;
+        std::cout << "U's var2 updated value: " << that.var2 << std::endl;
+        return that.var2 * that.var1;
     }
 };
         
@@ -106,7 +93,7 @@ int main()
     T beta( 2, "beta" );                                             //6
     
     TFunction f;                                            //7
-    auto* smaller = f.compare( &alpha, &beta );                              //8
+    auto* smaller = f.compare( alpha, beta );                              //8
     if (smaller != nullptr)
     {
         std::cout << "the smaller one is << " << smaller->name << std::endl; //9
@@ -115,10 +102,10 @@ int main()
     
     U gamma;
     float updatedValue = 5.f;
-    std::cout << "[static func] gamma's multiplied values: " << UFunction::smoothAndMultiply( &gamma, &updatedValue ) << std::endl;                  //11
+    std::cout << "[static func] gamma's multiplied values: " << UFunction::smoothAndMultiply( gamma, updatedValue ) << std::endl;                  //11
     
     U delta;
-    std::cout << "[member func] delta's multiplied values: " << delta.smoothAndMultiply( &updatedValue ) << std::endl;
+    std::cout << "[member func] delta's multiplied values: " << delta.smoothAndMultiply( updatedValue ) << std::endl;
 }
 
         
