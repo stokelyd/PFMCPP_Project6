@@ -28,7 +28,7 @@ struct T
 
 struct TFunction                               //4
 {
-    T* compare(T& a, T& b) //5
+    const T* compare( const T& a, const T& b) //5
     {
         if( a.value < b.value ) return &a;
         if( a.value > b.value ) return &b;
@@ -56,7 +56,7 @@ struct U
 
 struct UFunction
 {
-    static float smoothAndMultiply( U& that, float& updatedValue )        //10
+    static float smoothAndMultiply( U& that, const float& updatedValue )        //10
     {
         std::cout << "U's var1 value: " << that.var1 << std::endl;
         that.var1 = updatedValue;
@@ -93,7 +93,7 @@ int main()
     T beta( 2, "beta" );                                             //6
     
     TFunction f;                                            //7
-    auto* smaller = f.compare( alpha, beta );                              //8
+    const auto* smaller = f.compare( alpha, beta );                              //8
     if (smaller != nullptr)
     {
         std::cout << "the smaller one is << " << smaller->name << std::endl; //9
