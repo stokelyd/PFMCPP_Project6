@@ -80,18 +80,20 @@ struct U
 
     float smoothAndMultiply(float* updatedValue)      //12
     {
-        std::cout << "U's var1 value: " << var1 << std::endl;
         if (updatedValue != nullptr)
         {
+            std::cout << "U's var1 value: " << var1 << std::endl;
             var1 = *updatedValue;
+            std::cout << "U's var1 updated value: " << var1 << std::endl;
+            while( std::abs(var2 - var1) > 0.001f )
+            {
+                var2 += 0.1f;
+            }
+            std::cout << "U's var2 updated value: " << var2 << std::endl;
+            return var2 * var1;
         }
-        std::cout << "U's var1 updated value: " << var1 << std::endl;
-        while( std::abs(var2 - var1) > 0.001f )
-        {
-            var2 += 0.1f;
-        }
-        std::cout << "U's var2 updated value: " << var2 << std::endl;
-        return var2 * var1;
+
+        return 0.f;
     }
 };
 
