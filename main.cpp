@@ -28,7 +28,7 @@ struct T
 
 struct TFunction                               //4
 {
-    const T* compare( const T& a, const T& b) //5
+    T* compare( T& a, T& b) //5
     {
         if( a.value < b.value ) return &a;
         if( a.value > b.value ) return &b;
