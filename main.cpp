@@ -93,7 +93,7 @@ int main()
     T beta( 2, "beta" );                                             //6
     
     TFunction f;                                            //7
-    const auto* smaller = f.compare( alpha, beta );                              //8
+    auto* smaller = f.compare( alpha, beta );                              //8
     if (smaller != nullptr)
     {
         std::cout << "the smaller one is << " << smaller->name << std::endl; //9
